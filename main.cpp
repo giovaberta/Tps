@@ -15,36 +15,18 @@ void setup() {
 while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){
   printf("Display initialization falied");
 }
-display.clearDisplay();
-display.setTextColor(WHITE);
-display.setTextSize(1);
-display.setCursor(0,0);
-/*byte error, address;
-  for(address = 1; address < 127; address++ ) {
-    Wire.beginTransmission(address);
-    error = Wire.endTransmission();
-    if (error == 0) {
-      if(address,HEX == 1110111,HEX){
-        display.printf("oled 0x");
-        display.println(address,HEX);
-      }
-      else{
-        display.printf("I2C device found at address 0x");
-        display.println(address,HEX);
-      }
-    }  
-  }*/
-  display.drawLine(8,4,125,4,WHITE); // Riga Orzz superiore (x0=8,y0=4,x1=125,y1=4)
-  display.drawLine(8,4,8,56,WHITE);
-  display.drawLine(8,56,125,56,WHITE);
-  display.drawLine(125,56,125,4,WHITE);
-  display.drawLine(8,4,125,56,WHITE);
-  display.drawLine(8,56,125,4,WHITE);
-
-
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+  display.setTextSize(1);
+  display.setCursor(0,0);
+  //Dichiarazione righe
+  display.drawLine(8,4,125,4,WHITE); // Riga Orzz superiore
+  display.drawLine(8,4,8,56,WHITE); // Riga Vert sinistra
+  display.drawLine(8,56,125,56,WHITE); // Riga Orzz inferiore
+  display.drawLine(125,56,125,4,WHITE); // Riga Vert destra
+  display.drawLine(8,4,125,56,WHITE); // Diagonale supSx,infDx
+  display.drawLine(8,56,125,4,WHITE); // Diagonale infSx,supDx
+  //Mostra sul display
   display.display();
 }
-
-void loop(){
-
-}
+void loop(){  }
