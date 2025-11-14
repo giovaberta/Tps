@@ -15,10 +15,10 @@ void setup() {
 while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){
   printf("Display initialization falied");
 }
-  display.clearDisplay();
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(0,0);
+  //Dichiarazioni per eventuali testi
+  display.setTextColor(WHITE); //Colore testo impostato a bianco
+  display.setTextSize(1); // Dimensione del testo impostato a 1
+  display.setCursor(0,0); // Inizzializzo il puntatore a codinate 0,0 ovvero l'angolo in alto a sinistra
   //Dichiarazione righe
   display.drawLine(8,4,125,4,WHITE); // Riga Orzz superiore
   display.drawLine(8,4,8,56,WHITE); // Riga Vert sinistra
