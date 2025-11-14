@@ -25,11 +25,11 @@ void setup() {
   while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){
     printf("Display initialization falied"); //In caso qualcosa non andasse a buon fine
   }
-display.clearDisplay(); // Pulisco lo scermo preventivamente all'inizio del codice
-//Dichiarazioni per eventuali testi (in questo caso non utilizzati)
-display.setTextColor(WHITE); //Colore testo impostato a bianco
-display.setTextSize(1); // Dimensione del testo impostato a 1
-display.setCursor(0,0); // Inizzializzo il puntatore a codinate 0,0 ovvero l'angolo in alto a sinistra
+  display.clearDisplay(); // Pulisco lo scermo preventivamente all'inizio del codice
+  //Dichiarazioni per eventuali testi (in questo caso non utilizzati)
+  display.setTextColor(WHITE); //Colore testo impostato a bianco
+  display.setTextSize(1); // Dimensione del testo impostato a 1
+  display.setCursor(0,0); // Inizzializzo il puntatore a codinate 0,0 ovvero l'angolo in alto a sinistra
 }
 void loop(){
   switch (currentState)
