@@ -35,7 +35,7 @@ void loop() {
         }
         if(address == 60){
           if(ds == 0){
-            display.print("olex 0x3C\n");
+            display.print("oled 0x3C\n");
             ds++;
           }
         }
