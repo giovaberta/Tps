@@ -15,7 +15,7 @@ Adafruit_SSD1306 display= Adafruit_SSD1306(COL,ROW,&Wire,OLED_RST);
 void setup() {
   Wire.begin(OLED_SDA,OLED_SCL);
   while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){
-    printf("Display initialization falied");
+    printf("Display initialization failed");
   }
   display.setTextColor(WHITE); //Colore testo impostato a bianco
   display.setTextSize(1); // Dimensione del testo impostato a 1
