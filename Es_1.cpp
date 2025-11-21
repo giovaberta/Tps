@@ -23,29 +23,38 @@ void setup() {
   display.clearDisplay(); // Pulisco il display
      
 }
-  byte error, address;
-  int nDevices = 0, ds = 0, bmp = 0,aht = 0;
+  byte error, address; 
+  int nDevices = 0;
+  int ds = 0, bmp = 0,aht = 0; // Variabili per far stampare una sola valota 
 
 void loop() {  
+  // Eseguo una scansione dei dispositivi I2C collegati
     for(address = 1; address < 127; address++ ) { 
       Wire.beginTransmission(address);  
       error = Wire.endTransmission();
       if (error == 0) {
+        // I primi 16 address sono riservati
         if (address<16) {
         }
+        // Se il dispositivo rilevato ha address == 60
         if(address == 60){
+          // Corrisponde al display Oled
           if(ds == 0){
             display.print("oled 0x3C\n");
             ds++;
           }
         }
+        // Se il dispositivo rilevato ha address == 119
         if(address == 119){
+          // Corrisponde al sensore bmp
           if(bmp == 0){
             display.print("bmp 0x77\n");
             bmp++;
           }
         }
+        // Se il dispositivo rilevato ha address == 56
         if(address == 56){
+          // Corrisponde al sensore aht
           if(aht == 0){
             display.print("aht 0x38\n");
             aht++;
@@ -54,6 +63,7 @@ void loop() {
         nDevices++;
       }  
     }
+  // Se non ci sono dispositivi collegati do l'errore
     if (nDevices == 0) {
       display.println("No I2C devices found");
     }
