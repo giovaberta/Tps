@@ -9,29 +9,25 @@
 #define ROW 64
 #define COL 128
 
-Adafruit_SSD1306 display= Adafruit_SSD1306(COL,ROW,&Wire,OLED_RST);
+Adafruit_SSD1306 display= Adafruit_SSD1306(COL,ROW,&Wire,OLED_RST); // Creo l'oggetto di per il controllo del display
 
 
 void setup() {
   Wire.begin(OLED_SDA,OLED_SCL);
-  while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){
-    printf("Display initialization falied");
+  while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){ // Controllo che il display sia collegato
+    printf("Display initialization failed");
   }
   display.setTextColor(WHITE); //Colore testo impostato a bianco
   display.setTextSize(1); // Dimensione del testo impostato a 1
   display.setCursor(0,0); // Inizzializzo il puntatore a codinate 0,0 ovvero l'angolo in alto a sinistra
   display.clearDisplay(); // Pulisco il display
-  
-  display.println("21-11-25"); // Stampo data odierna
-  display.setTextSize(2); // Dimensione del testo impostato a 2
-  display.println("21-11-25"); // Stampo data odierna
-  display.setTextSize(3); // Dimensione del testo impostato a 3
-  display.println("21-11-25"); // Stampo data odierna
-  display.display();
+
+  for(int i = 1;i<4;i++){ // Eseguo il codice 3 volte
+    display.setTextSize(i); // Dimensione del testo impostato a i con viene aumentato da un ciclo for
+    display.println("21-11-25"); // Stampo data odierna
+  }
+  display.display(); // Carico sul displai i comandi in memoria
 
 }
-
-void loop() {
-
-}
-
+// Il void non è utilizzato
+void loop(){}
