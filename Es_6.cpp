@@ -56,7 +56,8 @@ void loop()
     display.setCursor(0,0);
     display.print("Temperatura: ");
     display.print(miaTemperatura.temperature);
-    display.println(" *C");
+    dysplay.print("\xF8")
+    display.println(" C");
     display.print("Umidità: ");
     display.print(miaUmidita.relative_humidity);
     display.println(" %");
