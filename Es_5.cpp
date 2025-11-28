@@ -46,22 +46,21 @@ void setup() {
 // Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
 // t_fine carries fine temperature as global value
 uint32_t t_fine;
-uint32_t bmp280_compensate_T_int32(uint32_t adc_T)
-{
-uint32_t var1, var2, T;
-var1 = ((((adc_T>>3) – ((uint32_t)dig_T1<<1))) * ((uint32_t)dig_T2)) >> 11;
-var2 = (((((adc_T>>4) – ((uint32_t)dig_T1)) * ((adc_T>>4) – ((uint32_t)dig_T1))) >> 12) *
-((uint32_t)dig_T3)) >> 14;
-t_fine = var1 + var2;
-T = (t_fine * 5 + 128) >> 8;
-return T;
+uint32_t bmp280_compensate_T_int32(uint32_t adc_T){
+  uint32_t var1, var2, T;
+  var1 = ((((adc_T>>3) - ((uint32_t)dig_T1<<1))) * ((uint32_t)dig_T2)) >> 11;
+  var2 = (((((adc_T>>4) - ((uint32_t)dig_T1)) * ((adc_T>>4) - ((uint32_t)dig_T1))) >> 12) *
+  ((uint32_t)dig_T3)) >> 14;
+  t_fine = var1 + var2;
+  T = (t_fine * 5 + 128) >> 8;
+  return T;
 }
 // Returns pressure in Pa as unsigned 32 bit integer in Q24.8 format (24 integer bits and 8 fractional bits).
 // Output value of “24674867” represents 24674867/256 = 96386.2 Pa = 963.862 hPa
 uint32_t bmp280_compensate_P_int64(uint32_t adc_P)
 {
   uint64_t var1, var2, p;
-  var1 = ((uint64_t)t_fine) – 128000;
+  var1 = ((uint64_t)t_fine) - 128000;
   var2 = var1 * var1 * (uint64_t)dig_P6;
   var2 = var2 + ((var1*(uint64_t)dig_P5)<<17);
   var2 = var2 + (((uint64_t)dig_P4)<<35);
@@ -107,14 +106,11 @@ void loop() {
     raw_temp = ((uint32_t)t_msb << 12) | ((uint32_t)t_lsb << 4) | (t_xlsb >> 4);
     
     // Stampa solo i dati richiesti sul seriale
-    Serial.print("Temperatura: ");
-    Serial.print(raw_temp);
-    Serial.println(" C");
-
-    Serial.print("Pressione: ");
-    Serial.print(raw_press);
-    Serial.println(" hPa");
-  } else {
+    Serial.println(raw_temp);
+    Serial.printf("Temperatura: %.2f C\n", bmp280_compensate_T_int32(raw_temp));
+    Serial.printf("Pressione: %.2f hPa\n", bmp280_compensate_P_int64(raw_press));
+    } 
+    else {
     // Se non ricevi 6 byte, stampa un errore
     Serial.println("Errore nella lettura dei dati!");
   }
@@ -122,8 +118,12 @@ void loop() {
   // Mostra i dati sul display OLED
   display.clearDisplay();
   display.setCursor(0, 0);
-  display.printf("Temperatura: %.2f C\n", raw_temp);
-  display.printf("Pressione: %.2f hPa\n", raw_press);
+  //display.printf("Temperatura: %.2f C\n", bmp280_compensate_T_int32(raw_temp));
+  Serial.println(raw_press);
+  float pr = bmp280_compensate_P_int64(raw_press);
+  display.print(pr);
+  Serial.print(pr);
+  //display.printf("Pressione: %.2f hPa\n", bmp280_compensate_P_int64(raw_press));
   display.display();
   
   delay(1000); // Pausa di 1 secondo
