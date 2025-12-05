@@ -16,7 +16,7 @@ Adafruit_SSD1306 display= Adafruit_SSD1306(COL,ROW,&Wire,OLED_RST); // Oggetto c
 void setup() {
   Wire.begin(OLED_SDA,OLED_SCL);
   // Se non rileva il display manda in errore
-  while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){ 
+  while(!display.begin(SSD1306_SWITCHCAPVCC,OLED)){ 
     printf("Display initialization falied");
   }
   display.clearDisplay(); //Pulisco lo schermo
