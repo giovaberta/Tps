@@ -3,17 +3,19 @@
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_BMP280.h>
 
-#define OLED_SDA 21
-#define OLED_SCL 22
-#define OLED_RST -1
-#define ROW 64
-#define COL 128
+#define OLED 0x3C // pin del display
 
-Adafruit_SSD1306 display= Adafruit_SSD1306(COL,ROW,&Wire,OLED_RST);
+#define OLED_SDA 21 // pin SDA
+#define OLED_SCL 22 // pin SCL
+#define OLED_RST -1 // RESET OLED
+#define ROW 64 // numero righe
+#define COL 128 // numero colonne
 
+Adafruit_SSD1306 display= Adafruit_SSD1306(COL,ROW,&Wire,OLED_RST); // Oggetto che controlla il display
 
 void setup() {
   Wire.begin(OLED_SDA,OLED_SCL);
+  // Se non rileva il display manda in errore
   while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){ 
     printf("Display initialization falied");
   }
@@ -22,7 +24,5 @@ void setup() {
   display.display(); // Carico la memoria sul display
 }
 
-void loop() {
-
-}
-
+// Il void non è utilizzato
+void loop() {}
