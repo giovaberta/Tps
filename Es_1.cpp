@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
 
-#define OLED 0x3C // pin del dispaly
+#define OLED 0x3C // pin del display
 
 #define OLED_SDA 21 // pin SDA
 #define OLED_SCL 22 // pin SCL
