@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
-#include <Adafruit_BMP280.h>
 
 #define OLED 0x3C // pin del display
 
