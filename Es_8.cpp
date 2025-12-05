@@ -1,9 +1,12 @@
-#include <Wire.h>               
+#include <Wire.h>              
 #include <ctime>                
 #include <Arduino.h>            
-#include <Adafruit_SSD1306.h>   
-#include <Adafruit_AHTX0.h>     
+#include <Adafruit_SSD1306.h>  
+#include <Adafruit_AHTX0.h>    
 #include <Adafruit_BMP280.h>    
+
+#define OLED 0x3C // pin display
+#define OLED 0x77 // pin del bmp280
 
 // Creazione oggetti sensori
 Adafruit_BMP280 bmp; // Sensore BMP280 per pressione e temperatura
@@ -23,7 +26,7 @@ Adafruit_SSD1306 display(COL, ROW, &Wire, OLED_RST);
 void setManualTime() {
     struct tm manualTime;
 
-    manualTime.tm_year = 2025 - 1900;  // Anno 
+    manualTime.tm_year = 2025 - 1900;  // Anno
     manualTime.tm_mon  = 11; // Mese (0=gennaio, quindi 11=Dicembre)
     manualTime.tm_mday = 5; // Giorno del mese
     manualTime.tm_hour = 9; // Ora
@@ -55,7 +58,7 @@ void setup() {
     }
 
     // Inizializza display OLED, riprova finché non funziona
-    while (!display.begin(SSD1306_SWITCHCAPVCC,0x3C)) {
+    while (!display.begin(SSD1306_SWITCHCAPVCC,OLED)) {
         printf("display initialization failed\n");
     }
 
@@ -66,7 +69,7 @@ void setup() {
     display.setCursor(0,0);
 
     // Configurazione iniziale particolare per BMP280
-    Wire.beginTransmission(0x77);
+    Wire.beginTransmission(BMP280);
     Wire.write(0xF4);
     Wire.write(0x27);
     Wire.endTransmission(true);
@@ -93,8 +96,7 @@ void loop() {
     display.printf("Ora: %02d:%02d:%02d", ora, min, sec);
 
     // Mostra temperatura e umidità sul display del aht
-    display.printf("\nAHT\nTemperatura: %.2f\nUmidita: %.2f",
-                   temp.temperature, humidity.relative_humidity);
+    display.printf("\nAHT\nTemperatura: %.2f\nUmidita: %.2f",temp.temperature, humidity.relative_humidity);
 
     display.display();
     delay(1000);        
@@ -107,7 +109,6 @@ void loop() {
     // Mostra su display temperatura e pressione da bmp
     display.printf("\nBMP\nTemperatura: %.2f\nPressione: %.2f",
                    bmp.readTemperature(), bmp.readPressure());
-    
-    display.display(); 
+    display.display();
     delay(1000);        
 }
