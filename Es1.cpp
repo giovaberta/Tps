@@ -1,32 +1,68 @@
 #include <Arduino.h>
-#include <Adafruit_SSD1306.h>
-#include <Wire.h>
 
-#define OLED_SDA 21
-#define OLED_SCL 22
-#define OLED_RST -1
-#define ROW 64
-#define COL 128
+#define Led_Giallo 33 // Il led giallo è assegnato al pin 33
+#define Led_Rosso 32 // Il led rosso è assegnato al pin 32
 
-Adafruit_SSD1306 display= Adafruit_SSD1306(COL,ROW,&Wire,OLED_RST);
+// Dichiaro le task
+void taskLedGiallo(void *parameter);
+void taskLedRosso(void *parameter);
+
+// Dichiare le variabili che utilizzo nel task per invertire lo stato dei led
+bool StatoG = false,StatoR = false;
 
 void setup() {
-  Wire.begin(OLED_SDA,OLED_SCL);
-while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){
-  printf("Display initialization falied");
+  Serial.begin(115200);
+  
+  // Configura pin LED come output
+  pinMode(Led_Rosso, OUTPUT);
+  pinMode(Led_Giallo, OUTPUT);
+  
+  // Spengo i led
+  digitalWrite(Led_Rosso, LOW);
+  digitalWrite(Led_Giallo, LOW);
+  
+  // Crea task LED giallo (priorità 1, stack 2048)
+  xTaskCreatePinnedToCore(
+    taskLedGiallo,    // Funzione task
+    "taskLedGiallo",  // Nome task
+    2048,             // Stack size assegnato al task
+    NULL,             // Parametri
+    1,                // Priorità 1
+    NULL,             // Task handle
+    1                 // Core 1
+  );
+  
+  // Crea task LED rosso (priorità 1, stack 2048)
+  xTaskCreatePinnedToCore(
+    taskLedRosso,  // Funzione task
+    "TaskRosso",   // Nome task
+    2048,          // Stack size assegnato al task
+    NULL,          // Parametri
+    1,             // Priorità 1
+    NULL,          // Task handle
+    0              // Core 0
+  );
 }
-  display.clearDisplay();
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(0,0);
-  //Dichiarazione righe
-  display.drawLine(8,4,125,4,WHITE); // Riga Orzz superiore
-  display.drawLine(8,4,8,56,WHITE); // Riga Vert sinistra
-  display.drawLine(8,56,125,56,WHITE); // Riga Orzz inferiore
-  display.drawLine(125,56,125,4,WHITE); // Riga Vert destra
-  display.drawLine(8,4,125,56,WHITE); // Diagonale supSx,infDx
-  display.drawLine(8,56,125,4,WHITE); // Diagonale infSx,supDx
-  //Mostra sul display
-  display.display();
+
+void loop() {} // Il Loop non serve dato che viene tutto gestito dai task
+
+// Task 1: Stampa frase e accende LED giallo
+void taskLedGiallo(void *parameter) {
+  vTaskDelay(300);                                                  // 300ms di delay (NON bloccante) per alternare i led
+  while(1) {                                                        // Ciclo infinito
+    Serial.println("Task Led giallo attivo - Led giallo acceso!");  // Stampo in seriale
+    StatoG = !StatoG;                                               // Inverto lo stato del led
+    vTaskDelay(300);                                                // 300ms di delay (NON bloccante per il sistema)
+    digitalWrite(Led_Giallo, StatoG);                               // Accende LED giallo
+  }
 }
-void loop(){  }
+
+// Task 2: Stampa frase e accende LED rosso
+void taskLedRosso(void *parameter) {
+  while(1) {                                                        // Ciclo infinito
+    Serial.println("Task Led rosso attivo - Led rosso acceso!");    // Stampo in seriale
+    StatoR = !StatoR;                                               // Inverto lo stato del led
+    vTaskDelay(300);                                                // 300ms di delay (NON bloccante per il sistema)
+    digitalWrite(Led_Rosso, StatoR);                                // Spegne LED rosso
+  }
+}
