@@ -29,7 +29,7 @@ void setup() {
     1                 // Core 1
   );
   
-  // Crea task LED rosso (priorità 1, stack 2048)
+  // Crea task LED rosso (priorità 2, stack 2048)
   xTaskCreatePinnedToCore(
     taskLedRosso,  // Funzione task
     "TaskRosso",   // Nome task
