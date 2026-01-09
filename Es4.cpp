@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
-#define Led_Giallo 26 // Il led giallo è assegnato al pin 33
-#define Led_Rosso 25 // Il led rosso è assegnato al pin 32
+#define Led_Giallo 26 // Il led giallo è assegnato al pin 26
+#define Led_Rosso 25 // Il led rosso è assegnato al pin 25
 
 // Dichiaro le task
 void taskLedGiallo(void *parameter);
