@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
-#define Led_Giallo 33 // Il led giallo è assegnato al pin 33
-#define Led_Rosso 32 // Il led rosso è assegnato al pin 32
+#define Led_Giallo 26 // Il led giallo è assegnato al pin 33
+#define Led_Rosso 25 // Il led rosso è assegnato al pin 32
 
 // Dichiaro le task
 void taskLedGiallo(void *parameter);
@@ -30,7 +30,7 @@ void setup() {
     1                 // Core 1
   );
   
-  // Crea task LED rosso (priorità 1, stack 2048)
+  // Crea task LED rosso (priorità 5, stack 2048)
   xTaskCreatePinnedToCore(
     taskLedRosso,  // Funzione task
     "TaskRosso",   // Nome task
@@ -62,36 +62,30 @@ void taskLedGiallo(void *parameter) {
     digitalWrite(Led_Giallo, HIGH);
     vTaskDelay(1000);
     digitalWrite(Led_Giallo ,LOW);
+    vTaskDelay(2001);
   }
 }
 
 // Task 2: Accende il led rosso
 void taskLedRosso(void *parameter) {
   while(1) {     // Ciclo infinito                 
-    vTaskDelay(1000);
+    vTaskDelay(1001);
     digitalWrite(Led_Giallo ,LOW);
     digitalWrite(Led_Rosso, HIGH);
     vTaskDelay(1000);
     digitalWrite(Led_Rosso ,LOW);
-    vTaskDelay(2005);
+    vTaskDelay(1000);
   }
 }
 
 // Task 3 : Accende entrambi i led
 void taskLedAccesi(void *parameter) {
   while(1) { // Ciclo infinito           
-    vTaskDelay(3000);
+    vTaskDelay(2001);
     digitalWrite(Led_Giallo, HIGH);
     digitalWrite(Led_Rosso, HIGH);
     vTaskDelay(1000);
     digitalWrite(Led_Rosso ,LOW);
-    digitalWrite(Led_Giallo, LOW);
 
   }
 }
-
-/*
-Considerazioni :
- Quello con priorità più alta viene comunque eseguito di meno dato che c'è un blocco di 5ms che permette
- al task 1 di essere eseguito molte più volte del task 2
-*/
