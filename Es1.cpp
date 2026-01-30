@@ -1,32 +1,33 @@
 #include <Arduino.h>
-#include <Adafruit_SSD1306.h>
-#include <Wire.h>
+#include <BluetoothSerial.h>
+#include <Adafruit_BMP280.h>
 
-#define OLED_SDA 21
-#define OLED_SCL 22
-#define OLED_RST -1
-#define ROW 64
-#define COL 128
-
-Adafruit_SSD1306 display= Adafruit_SSD1306(COL,ROW,&Wire,OLED_RST);
+// Dichiaro l'oggetto bluetooth
+BluetoothSerial SerialBT;
+// Dichiaro le varie variabili per l'esecuzione del programma
+char ris;
+float temp,press;
+// Oggetto bmp
+Adafruit_BMP280 bmp;
 
 void setup() {
-  Wire.begin(OLED_SDA,OLED_SCL);
-while(!display.begin(SSD1306_SWITCHCAPVCC,0x3C)){
-  printf("Display initialization falied");
+  Serial.begin(115200);                             // Inizializzo la seriale
+  SerialBT.begin("Esp32TestBerta");                 // Do il nome al blueTooth
+  Serial.println("Inizio trasmissione");            // Stampo in seriale un messaggio di verifica
+  while(!bmp.begin()){                              // Controllo che il bmp sia collegato correttamente 
+    printf("Errore nel bmp");                       // Se viene rilevato un problema con il bmp stampo un messaggio di errore
+  }
 }
-  display.clearDisplay();
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(0,0);
-  //Dichiarazione righe
-  display.drawLine(8,4,125,4,WHITE); // Riga Orzz superiore
-  display.drawLine(8,4,8,56,WHITE); // Riga Vert sinistra
-  display.drawLine(8,56,125,56,WHITE); // Riga Orzz inferiore
-  display.drawLine(125,56,125,4,WHITE); // Riga Vert destra
-  display.drawLine(8,4,125,56,WHITE); // Diagonale supSx,infDx
-  display.drawLine(8,56,125,4,WHITE); // Diagonale infSx,supDx
-  //Mostra sul display
-  display.display();
+void loop() {
+  if (SerialBT.available()) {                       // Se il c'è un dispositivo collegato
+    ris = SerialBT.read();                          // Leggo se è arrivato un messaggio
+    if(ris=='t' or ris=='T'){                       // Se il messagio è una "T" o "t" passa
+      temp = bmp.readTemperature();                 // Leggo il valore della temperatura
+      SerialBT.printf("Temperatura: %.2f",temp);    // Stampo sulla seriale del dispositivo BlueTooth collegato il dato della temperatura
+    }
+    if(ris=='p' or ris=='P'){                       // Se il mesaggio è una "P" o "p" passa
+      press = bmp.readPressure();                   // Leggo il vaore della pressione sul bmp
+      SerialBT.printf("Pressione: %.2f",press);     // Stampo sulla seriale del dispositivo BlueTooth collegato il dato della pressione 
+    }   
+  }
 }
-void loop(){  }
