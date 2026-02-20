@@ -38,7 +38,6 @@ void setup() {
                  
 
 void loop() {
-  
   display.print(WiFi.SSID());
   display.print(WiFi.localIP());
   Serial.print(WiFi.SSID());
@@ -47,6 +46,5 @@ void loop() {
   display.clearDisplay();
   display.setCursor(0,0);
   delay(1000);
-  
 }
 
