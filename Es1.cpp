@@ -14,6 +14,9 @@ Adafruit_SSD1306 display= Adafruit_SSD1306(COL,ROW,&Wire,OLED_RST);
 
 void setup() {
   Serial.begin(115200);
+  while(!display.begin(SSD1306_SWITCHCAPVCC,OLED)){
+   printf("Display initialization falied"); //In caso qualcosa non andasse a buon fine
+ }
   WiFi.begin("TPSITquinteBis","quintaemme");
   while(WiFi.status() != WL_CONNECTED){
     display.clearDisplay();
@@ -22,11 +25,9 @@ void setup() {
     display.print("Connessione....");
     display.display();
     delay(1000);
-    WiFi.begin("TPSITquinteBis","quintaemme");
+  
   }
- while(!display.begin(SSD1306_SWITCHCAPVCC,OLED)){
-   printf("Display initialization falied"); //In caso qualcosa non andasse a buon fine
- }
+ 
   display.clearDisplay(); // Pulisco lo scermo preventivamente all'inizio del codice
  //Dichiarazioni per eventuali testi (in questo caso non utilizzati)
  display.setTextColor(WHITE); //Colore testo impostato a bianco
@@ -40,7 +41,7 @@ void setup() {
 void loop() {
   display.print(WiFi.SSID());
   display.print(WiFi.localIP());
-  Serial.print(WiFi.SSID());
+  Serial.println(WiFi.SSID());
   Serial.println(WiFi.localIP());
   display.display();
   display.clearDisplay();
