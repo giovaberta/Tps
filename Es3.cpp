@@ -6,6 +6,7 @@
 
 const char* ssid = "TPSITquinteBis";
 const char* password = "quintaemme";
+int nWifi ;
 
 String CriptType(wifi_auth_mode_t encryptionType) {
   switch (encryptionType) {
@@ -52,7 +53,12 @@ void loop() {
       String encryption = CriptType(WiFi.encryptionType(i));
       // Stampo in seriale la rete con il some l'rssi e la tipologia di crittografia
       Serial.printf("[%2d] SSID: %-20s | RSSI: %d dBm \t| Crittografia: %s\n",i + 1,nomeSsid.c_str(),rssi,encryption.c_str());
+      if (nomeSsid == String(ssid)) {
+        nWifi = i;
+      }
     }
+    Serial.printf(">> Connesso a: %s\n", ssid);
+    Serial.printf(">> Crittografia in uso: %s\n", CriptType(WiFi.encryptionType(nWifi)));
   }
   Serial.println("---------");
   delay(10000); // Attende 10 secondi prima del prossimo scan
