@@ -1,6 +1,4 @@
 #include <Arduino.h>
-#include <WiFi.h>
-#include <Adafruit_SSD1306.h>
 #include <ESP32Ping.h>
 #include <WiFi.h>
 
