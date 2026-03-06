@@ -25,8 +25,8 @@ const int   MQTT_PORT   = 1883;
 const char* CLIENT_ID   = "esp32_publisher_01";  // ID univoco sul broker
 
 // Topic su cui vengono pubblicati i dati del sensore
-const char* TOPIC_TEMP = "scuola/fasto/temperatura";
-const char* TOPIC_PRES = "scuola/fasto/pressione";
+const char* TOPIC_TEMP = "scuola/berta/temperatura";
+const char* TOPIC_PRES = "scuola/berta/pressione";
 
 #define PUBLISH_INTERVAL_MS 3000UL  // pubblica ogni 3 secondi
 
