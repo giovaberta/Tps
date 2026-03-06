@@ -54,16 +54,16 @@ void loop() {
         Serial.printf("Comando ricevuto: '%c'\n", cmd);
         // Creo una macchina a stati per interpretare il comando
         switch (cmd) {
-          // Per l'invio della pressione
+          // Caso in caso del 'p' per la pressione
           case 'p': {
-            float pressure = bmp.readPressure();  // hPa
+            float pressure = bmp.readPressure();
             char buf[64];
             snprintf(buf, sizeof(buf), "Pressione: %.2f hPa\n", pressure);
             client.print(buf); 
             break;
           }
           
-          // Per l'invio della temperatura
+          // Caso in caso del 't' per la temperatura
           case 't': {
             float temp = bmp.readTemperature();
             char buf[64];
@@ -72,7 +72,7 @@ void loop() {
             break;
           }
 
-          // Per il quit
+          // Caso in caso del 'q' per la disconnessione
           case 'q': {
             client.println("Disconnessione. Ciao!\n");
             client.stop();
@@ -82,6 +82,7 @@ void loop() {
         }
       }
     }
+    // In caso il client perda la connessione 
     client.stop();
     Serial.println("Client disconnesso.");
   }
