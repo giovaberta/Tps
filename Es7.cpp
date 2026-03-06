@@ -123,7 +123,7 @@ void loop() {
 
     float temp = bmp.readTemperature();  // °C
     float pres = bmp.readPressure();     // Pa → convertita in hPa alla pubblicazione
-
+    // Converte da float a stringa con 5/7 di minimo con 2 cifre decimali e li salva sul buf
     char bufTemp[10], bufPres[10];
     dtostrf(temp,       5, 2, bufTemp);  // float → stringa per publish MQTT
     dtostrf(pres/100.0, 7, 2, bufPres);
